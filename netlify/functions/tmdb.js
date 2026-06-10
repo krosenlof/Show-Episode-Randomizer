@@ -52,7 +52,7 @@ exports.handler = async (event) => {
 };
 
 async function tmdbFetch(path) {
-  const url = `${TMDB_BASE}${path}&api_key=${API_KEY}`;
+  const url = `${TMDB_BASE}${path}${path.includes("?") ? "&" : "?"}api_key=${API_KEY}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`TMDB error: ${res.status}`);
   return res.json();
