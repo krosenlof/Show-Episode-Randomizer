@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Random Episode Picker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="container">
+    <h1>🎲 Random Episode Picker</h1>
+    <p class="subtitle">Find a show, then let fate decide what you watch.</p>
+
+    <!-- Search -->
+    <div class="search-wrapper">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search for a TV show..."
+        autocomplete="off"
+      />
+      <div id="searchResults" class="search-results hidden"></div>
+    </div>
+
+    <!-- Selected Show -->
+    <div id="showCard" class="show-card hidden">
+      <img id="showPoster" src="" alt="" />
+      <div class="show-info">
+        <h2 id="showName"></h2>
+        <p id="showOverview"></p>
+      </div>
+    </div>
+
+    <!-- Season Selector + Buttons -->
+    <div id="controls" class="controls hidden">
+      <div class="season-row">
+        <label for="seasonSelect">Filter by season (optional):</label>
+        <select id="seasonSelect">
+          <option value="">Any Season</option>
+        </select>
+      </div>
+      <button id="randomBtn" class="btn-random">🎲 Pick Random Episode</button>
+    </div>
+
+    <!-- Result -->
+    <div id="resultCard" class="result-card hidden">
+      <div class="result-label">Your episode:</div>
+      <div class="result-season" id="resultSeason"></div>
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-overview" id="resultOverview"></div>
+      <div class="result-airdate" id="resultAirdate"></div>
+      <button id="rerollBtn" class="btn-reroll">🔄 Pick Another</button>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
