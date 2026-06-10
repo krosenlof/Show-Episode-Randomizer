@@ -132,4 +132,66 @@ async function pickRandom() {
     for (const season of allSeasons) {
       rand -= season.episodeCount;
       if (rand < 0) {
-        seasonNumber =
+        seasonNumber = season.number;
+        break;
+      }
+    }
+  }
+
+  try {
+    randomBtn.textContent = "Loading...";
+    randomBtn.disabled = true;
+
+    const res = await fetch(`/api/tmdb?action=episodes&showId=${selectedShow.id}&season=${seasonNumber}`);
+    const data = await res.json();
+
+    const episodes = data.episodes || [];
+    if (episodes.length === 0) {
+      alert("No episodes found for that season.");
+      return;
+    }
+
+    const ep = episodes[Math.floor(Math.random() * episodes.length)];
+
+    resultSeason.textContent = `Season ${seasonNumber}  ·  Episode ${ep.number}`;
+    resultTitle.textContent = ep.name || "Untitled Episode";
+    resultOverview.textContent = ep.overview || "No description available.";
+    resultAirdate.textContent = ep.airDate ? `Aired: ${formatDate(ep.airDate)}` : "";
+    resultCard.classList.remove("hidden");
+    resultCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+  } catch (err) {
+    alert("Something went wrong picking an episode. Try again.");
+  } finally {
+    randomBtn.textContent = "🎲 Pick Random Episode";
+    randomBtn.disabled = false;
+  }
+}
+
+// ── Helpers ──────────────────────────────────────────────
+
+function hideResults() {
+  searchResults.classList.add("hidden");
+  searchResults.innerHTML = "";
+}
+
+function resetResult() {
+  resultCard.classList.add("hidden");
+  resultSeason.textContent = "";
+  resultTitle.textContent = "";
+  resultOverview.textContent = "";
+  resultAirdate.textContent = "";
+}
+
+function escapeHtml(str) {
+  return (str || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+function escapeAttr(str) {
+  return (str || "").replace(/"/g, "&quot;").replace(/\n/g, " ");
+}
+
+function formatDate(dateStr) {
+  const d = new Date(dateStr + "T00:00:00");
+  return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+}
